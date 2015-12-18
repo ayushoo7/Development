@@ -1,0 +1,42 @@
+package com.aeesha.test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * @author AD00436114
+ *<p>Counting Impl to implement counting fort</p>
+ *<h1>Implemented Using List Array</h1>
+ *
+ */
+public class CountingImpl implements Counting {
+	public void countigSort(){
+		Scanner scan = new Scanner(System.in);
+		int numberOfInput= Integer.parseInt(scan.nextLine());
+		int counter=0;
+		List<List<String>> listOfInput = new ArrayList<List<String>>();
+		int[] tempArray = new int[100];
+		int temp=0;
+		String[] tempDualArray = new String[2];
+		while(counter++<numberOfInput){
+			String input = scan.nextLine();
+			
+			listOfInput.add(Arrays.asList(input.split(" ")));//l1.get(j++).get(0)
+		}		
+		
+		if(listOfInput.size() != numberOfInput){
+			System.out.println("Wrong input");
+			System.exit(0);
+		}		 
+		for (List<String> i : listOfInput) {
+			tempArray[Integer.parseInt(i.get(0))]++;
+		}
+		for(int i =0 ;i<=tempArray.length;i++){
+			temp = temp + tempArray[i];
+			tempArray[i] = temp;	
+			
+		}
+	}
+}

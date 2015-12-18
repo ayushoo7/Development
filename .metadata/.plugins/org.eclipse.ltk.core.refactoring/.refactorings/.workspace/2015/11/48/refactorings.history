@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;vxv.phraseset.mailBoxInventory.audio.ROOT&apos;" deleteContents="false" description="Delete resource &apos;vxv.phraseset.mailBoxInventory.audio.ROOT&apos;" element1="/vxv.phraseset.mailBoxInventory.audio.ROOT" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1448285150615"/>
+</session>

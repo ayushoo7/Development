@@ -1,0 +1,34 @@
+package com.aeesha.test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class CountingImpl implements Counting {
+	public void countigSort(){
+		Scanner scan = new Scanner(System.in);
+		int k= Integer.parseInt(scan.nextLine());
+		int j=1;
+		List<List<String>> l1 = new ArrayList<List<String>>(); 
+		while(j++<=k){
+			String input = scan.nextLine();
+			l1.add(Arrays.asList(input.split(" ")));
+			System.out.println(l1.get(0));
+		}
+		String[] inputString= scan.nextLine().split(" ");
+		if(inputString.length != k){
+			System.out.println("Wrong inout");
+			System.exit(0);
+		}
+		int[] tempArray = new int[100]; 
+		for (String i : inputString) {
+			tempArray[Integer.parseInt(i)]++;
+		}
+		for(int i=0;i<=tempArray.length;i++){
+			while(tempArray[i]-- !=0){
+				System.out.print(i+" ");					
+			}
+		}
+	}
+}

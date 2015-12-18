@@ -1,0 +1,49 @@
+package com.ayush.test;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+
+import com.ayush.util.RunningTime;
+/**
+ * @author AD00436114
+ *
+ */
+public class PlayingWithNumberImpl implements PlayingWithNumber {
+	
+	/**
+	 * @param args
+	 */
+	/**
+	 * @param args
+	 */
+	public static void main(String... args){
+		RunningTime r1= new RunningTime();
+		System.out.println(r1.getStartTime());
+		Scanner scan = new Scanner(System.in);
+		String N= scan.nextLine();
+		String[] Narray=scan.nextLine().split(" ");
+		String Q= scan.nextLine();
+		Arrays.sort (Narray, new Element());
+		for (String string : Narray) {
+			System.out.println(string);
+		}
+		System.out.println(r1.getEndTime());
+		System.out.println(r1.timeDiff()/1000);
+		
+	}
+	
+	/**
+	 * @author AD00436114
+	 *
+	 */
+	private static class Element implements Comparator<String>{
+
+		public int compare(String o1, String o2) {
+			// TODO Auto-generated method stub
+			return Integer.parseInt(o1) - Integer.parseInt(o2);
+		}
+		
+	}
+	
+
+}

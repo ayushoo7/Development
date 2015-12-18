@@ -1,0 +1,9 @@
+package com.ayush.test;
+
+/**
+ * @author AD00436114
+ *
+ */
+public class PlayingWithNumberImpl implements PlayingWithNumber {
+
+}

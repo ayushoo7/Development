@@ -1,0 +1,5 @@
+package com.aeesha.test;
+
+public class CountingImpl implements Counting {
+
+}
