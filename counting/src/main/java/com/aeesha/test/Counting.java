@@ -8,3 +8,5 @@ public interface Counting {
 	public void countigSort();
 	
 }
+
+
