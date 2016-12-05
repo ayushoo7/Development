@@ -1,0 +1,63 @@
+package com.example;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+
+public class BatFileExecution {
+	private static String path="attachments/";
+	public static void main(String[] args) {
+		new BatFileExecution().readFile("abc.jpg");
+		
+	}
+	public void readFile(String name){
+		Runtime runtime = Runtime.getRuntime();
+	
+			ClassLoader classLoader = getClass().getClassLoader();
+			System.out.println(classLoader.getResource(path + "findFiles.bat").getPath().substring(1));
+			String finalPath =classLoader.getResource(path ).getPath().substring(1);
+			String line;
+		    Process p1;
+		    String s ="";
+		    BufferedReader input;
+			try {
+				ProcessBuilder builder = new ProcessBuilder(finalPath+"findFiles.bat");
+				File dir = new File(finalPath);
+				builder.directory(dir);
+				builder.redirectErrorStream(true);
+				p1= builder.start();
+				/*p1 = runtime.exec(   " cmd.exe /c start findFiles.bat");
+				p1.waitFor();*/
+				//"cmd /c start " + finalPath );
+				BufferedInputStream buffer = new BufferedInputStream(p1.getInputStream());
+				 input = new BufferedReader(new InputStreamReader(buffer));
+				// input = new BufferedReader(new InputStreamReader(p1.getInputStream()));
+				 StringBuffer sbuffer = new StringBuffer();
+				 System.out.println(p1.getInputStream().read());
+				 while((line = input.readLine())!=null){
+				 sbuffer.append(line+"\n");
+				 s = sbuffer.toString();
+
+				 }
+				 System.out.println(s);
+			    //input.close();
+				 }
+			 catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		   
+				
+			
+		    
+		    
+
+		
+		
+		
+}
+}
