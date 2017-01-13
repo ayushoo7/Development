@@ -1,0 +1,186 @@
+package com.bosch.cowo.masterdatagateway.api;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+
+public class MasterDataImpl implements IMasterData {
+
+	public String default_cowo_mongodb_uri = "mongodb://127.0.0.1/cowo";
+	private static String basePathJson = "json/";
+	private MongoClient client;
+	private MongoDatabase db;	
+	private static String fileType = ".json";
+	private static final Log LOG = LogFactory.getLog(MasterDataImpl.class);
+	private static final String OWNER_ID = "com.bosch.cowo.equipments";
+	public static final String INTERNAL_DOC_TYPE_SEPARATOR = "->";
+	public static final String FIELD_ID = "ID";
+
+	public MasterDataImpl(@Value("${spring.datasource.url}") String default_cowo_mongodb_uri) {
+		this.default_cowo_mongodb_uri = default_cowo_mongodb_uri;
+		String mongoClientUri = System.getProperty("cowo.mongodb.uri", this.default_cowo_mongodb_uri);
+		MongoClientURI uri = new MongoClientURI(mongoClientUri);
+		this.client = new MongoClient(uri);
+		this.db = this.client.getDatabase(uri.getDatabase());
+
+	}
+
+	@Override
+	public void dropDB() {
+		LOG.debug("Drop db" + this.db.getName());
+		this.db.drop();
+
+	}
+
+	@Override
+	public Boolean dropCollection(String type) {		
+		MongoCollection<org.bson.Document> col = this.db.getCollection(type);
+		if (col == null) {
+			LOG.debug("No collection found for particuylar type:" + type);
+			return null;
+		}
+		return null;
+		
+	}
+
+	@Override
+	public void createDB() {
+
+	}
+
+	@Override
+	public void createCollection(String type) {
+
+	}
+
+	@Override
+	public synchronized void createDocument(String type) {
+		MongoCollection<org.bson.Document> col;
+		String documentTyp = convertToInternalDocumentType(OWNER_ID, type);
+		if (this.db.listCollections().filter(new org.bson.Document("name", documentTyp)).first() != null) {
+			col = this.db.getCollection(documentTyp);
+		} else {
+			this.db.createCollection(documentTyp);
+			col = this.db.getCollection(documentTyp);
+			col.createIndex(new org.bson.Document(FIELD_ID, 1), new IndexOptions().unique(true));
+			// create index for text search
+			col.createIndex(new org.bson.Document("$**", "text"));
+		}
+		
+		//col.replaceOne(new org.bson.Document(FIELD_ID, id), convertToMongo(doc), new UpdateOptions().upsert(true));
+		col.insertOne(readdocumet(type));
+
+	}
+
+	@Override
+	public void saveDocument() {
+
+	}
+
+	@Override
+	public void updateDocument(String id, Document doc) {
+
+	}
+
+	@Override
+	public void deleteDocument(String id) {
+
+	}
+
+	public void deleteCollection(String Type) {
+		// remember to delete reference
+	}
+
+	@Override
+	public void createReference() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private Document readdocumet(String type) {
+		ClassLoader classLoader = getClass().getClassLoader();
+		InputStream is = classLoader.getResourceAsStream(basePathJson + type + fileType);		
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String line;
+		String tmp = "";
+		try {
+			while ((line = br.readLine()) != null) {
+
+				if (line.trim().compareTo("{") ==0 ) {
+					tmp = tmp + "{";
+					tmp = tmp + "\"ID:\""+"\""+ UUID.randomUUID().toString() + "\""+ ",";
+				}
+				else
+					tmp += line;
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Document myDoc = Document.parse(tmp);
+		return myDoc;
+
+	}
+
+	private String convertToInternalDocumentType(String ownerId, String type) {
+		if (type == null) {
+			throw new NullPointerException("type cannot be null");
+		}
+		return (ownerId != null ? ownerId : "") + INTERNAL_DOC_TYPE_SEPARATOR + type;
+	}
+
+}
+
+
+/*{
+    "_id" : ObjectId("58763cd25026e06c9a5184af"),
+    "ID" : "b9883585-b395-4800-9523-9e8269237066",
+    "DISPLAY_NAME" : "Tire Inspection",
+    "NAME" : "Tire Inspection"
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("58763cd95026e06c9a5184d2"),
+    "ID" : "a0620635-6be8-4f91-92a1-0bf5a55ca865",
+    "DISPLAY_NAME" : "Battery",
+    "NAME" : "Battery"
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("58763cd95026e06c9a5184db"),
+    "ID" : "09232256-d60c-4b50-bc1b-43ca571159ee",
+    "DISPLAY_NAME" : "Trouble code",
+    "NAME" : "Trouble code"
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("58763cda5026e06c9a5184e6"),
+    "ID" : "f979c09b-09b7-4a8a-b225-760bea0c9471",
+    "DISPLAY_NAME" : "E2H",
+    "NAME" : "E2H"
+}
+
