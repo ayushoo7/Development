@@ -1,0 +1,15 @@
+with no whitespce Pattern pattern = Pattern.compile("^[\\w]{0,50}$");
+for email Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+for phone number Pattern pattern = Pattern.compile("^[\\d]{10,}$");
+for internet adddress Pattern pattern = Pattern.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+        
+to get list of country String[] countryCodes = Locale.getISOCountries();
+
+String[] countryCodes = Locale.getISOCountries();
+		Arrays.asList(countryCodes).stream().forEach(x -> {
+			Locale obj = new Locale("", x);
+			
+		});
