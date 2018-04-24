@@ -54,6 +54,7 @@ public class Test1 {
 		for (String method : que) {
 
 			try {
+				@SuppressWarnings("rawtypes")
 				Class[] cArg = new Class[1];
 		         cArg[0] = Boolean.class;
 				Method method1 = Test1.class.getDeclaredMethod(method, cArg);
@@ -82,9 +83,10 @@ public class Test1 {
 
 		}
 		if(!stk.isEmpty()) {
-			for(String method : stk) {
-				
+			while(!stk.isEmpty()) {
+				String method = stk.pop();
 				try {
+					@SuppressWarnings("rawtypes")
 					Class[] cArg = new Class[1];
 			         cArg[0] = Boolean.class;
 					Method method1 = Test1.class.getDeclaredMethod(method, cArg);
@@ -124,8 +126,22 @@ public class Test1 {
 	@Order(value = 3)
 	private Boolean test3(Boolean arg) {
 		System.out.println(arg +"test3");
+		return arg;
+	}
+	
+	@Order(value = 4)
+	private Boolean test4(Boolean arg) {
+		System.out.println(arg +"test4");
+		return arg;
+	}
+
+	
+	@Order(value = 5)
+	private Boolean test5(Boolean arg) {
+		System.out.println(arg +"test5");
 		return false;
 	}
+
 
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Order {
