@@ -25,14 +25,8 @@ public class Spiral {
 			
 			int k =j;
 			do {
-				Character c = collect.get(i);
-				if (toggle) {
-					order.push(c);
-
-				} else {
-					order.push(c);
-
-				}
+				Character c = collect.get(i);				
+				order.push(c);				
 				i++;
 				k--;
 			}
