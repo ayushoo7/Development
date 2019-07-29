@@ -1,0 +1,106 @@
+package com.ayush.listoflist;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class GetAsosciativeNumberPresence {
+
+	public List<List<Integer>> getListOfList() {
+		List<List<Integer>> lstOfList = new ArrayList();
+		List<Integer> list1 = Arrays.asList(new Integer[] { 1, 2, 3, 12 });
+		lstOfList.add(list1);
+
+		list1 = Arrays.asList(new Integer[] { 6, 7, 9 });
+		lstOfList.add(list1);
+
+		list1 = Arrays.asList(new Integer[] { 12, 14, 15, 19 });
+		lstOfList.add(list1);
+		list1 = Arrays.asList(new Integer[] { 12, 14, 15, 19 });
+		lstOfList.add(list1);
+		
+		list1 = Arrays.asList(new Integer[] { 20, 21, 22, 23 });
+		lstOfList.add(list1);
+		
+		return lstOfList;
+
+	}
+
+	public static void main(String[] args) {
+		int k = 3;
+		int l = 19;
+		Demo demo = new Demo();
+		List<List<Integer>> listOfList = demo.getListOfList();
+		List<List<Integer>> compromisedList = demo.creatingCompromisedListofList(listOfList);
+		printpresentNotpresent(k, l, compromisedList);
+
+	}
+
+	private static void printpresentNotpresent(int k, int l, List<List<Integer>> extracted) {
+		Stream<Set<Integer>> map = extracted.stream().map(x -> x.stream().collect(Collectors.toCollection(TreeSet :: new)));
+		Set<Set<Integer>> listFinalizeed = map.collect(Collectors.toSet());
+		System.out.println(listFinalizeed.toString());
+		long count = listFinalizeed.stream().filter(x -> x.contains(k) && x.contains(l)).count();
+		System.out.println(count > 0 ? true : false);
+	}
+
+	private  List<List<Integer>> creatingCompromisedListofList(List<List<Integer>> listOfList) {
+		final List<List<Integer>> listOfListTmp = new ArrayList();
+		List<Integer> list = listOfList.get(0);
+		// listOfListTmp.add(list);
+		listOfList.remove(0);
+		boolean found = false;
+		for (List<Integer> listOfInteger : listOfList) {
+			if (listOfListTmp.size() == 0) {
+				for (Integer init : list) {
+					if (listOfInteger.contains(init)) {
+						List<Integer> listnew = new ArrayList(list);
+						for (Integer k : listOfInteger) {
+							listnew.add(k);
+						}
+						list = new ArrayList(listnew);
+						found = true;
+						break;
+					}
+				}
+			}else {
+				final List<List<Integer>> listOfListTmp1 = new ArrayList(listOfListTmp);
+				for(List<Integer> listOfIntegerfinal : listOfListTmp1) {
+					int indexOf = listOfListTmp.indexOf(listOfIntegerfinal);
+					for (Integer init : listOfIntegerfinal) {
+						if (listOfInteger.contains(init)) {
+							List<Integer> listnew = new ArrayList(listOfListTmp.get(indexOf));
+							for (Integer k : listOfInteger) {
+								listnew.add(k);
+							}
+							list = new ArrayList(listnew);
+							List<Integer> list2 = listOfListTmp.get(indexOf);
+							list.addAll(list2);
+							listOfListTmp.remove(indexOf);
+							listOfListTmp.add(list);
+							found = true;
+							break;
+						}
+					}
+				}
+			}
+			if (!found) {
+				listOfListTmp.add(list);
+				list = listOfInteger;
+				listOfListTmp.add(list);
+
+			}
+			found = false;
+
+		}
+		if (listOfListTmp.size() == 0) {
+			listOfListTmp.add(list);
+		}
+		return listOfListTmp;
+	}
+
+}
