@@ -33,7 +33,7 @@ public class GetAsosciativeNumberPresence {
 	public static void main(String[] args) {
 		int k = 3;
 		int l = 19;
-		Demo demo = new Demo();
+		GetAsosciativeNumberPresence demo = new GetAsosciativeNumberPresence();
 		List<List<Integer>> listOfList = demo.getListOfList();
 		List<List<Integer>> compromisedList = demo.creatingCompromisedListofList(listOfList);
 		printpresentNotpresent(k, l, compromisedList);
