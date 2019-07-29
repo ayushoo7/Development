@@ -44,8 +44,8 @@ public class GetAsosciativeNumberPresence {
 		Stream<Set<Integer>> map = extracted.stream().map(x -> x.stream().collect(Collectors.toCollection(TreeSet :: new)));
 		Set<Set<Integer>> listFinalizeed = map.collect(Collectors.toSet());
 		System.out.println(listFinalizeed.toString());
-		long count = listFinalizeed.stream().filter(x -> x.contains(k) && x.contains(l)).count();
-		System.out.println(count > 0 ? true : false);
+		boolean present = listFinalizeed.stream().anyMatch(x -> x.contains(k) && x.contains(l));
+		System.out.println(present);
 	}
 
 	private  List<List<Integer>> creatingCompromisedListofList(List<List<Integer>> listOfList) {
